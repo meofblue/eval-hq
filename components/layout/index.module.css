@@ -1,0 +1,21 @@
+.logo {
+  margin: 8px 24px;
+  width: 48px;
+  height: 48px;
+  background: rgb(60, 60, 60);
+  background: url('/light-bulb.png') no-repeat;
+  background-size: contain;
+  background-position: center;
+}
+
+.layout {
+  background: #fff;
+  padding: 24px 0;
+}
+
+.main {
+  width: 1960px;
+  max-width: 100%;
+  align-self: center;
+  margin-top: 50px;
+}
