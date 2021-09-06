@@ -4,8 +4,7 @@ import { Button, Checkbox, Input, Space, Table } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { useArts } from "api";
 import Head from "components/head";
-import ArtistSelectField from "components/artist-select";
-import MuseumSelectField from "components/museum-select";
+import { ArtistSelect, MuseumSelect } from "components/fields";
 import Filter from "components/filter";
 import styles from "./index.module.css";
 
@@ -23,14 +22,14 @@ const fields = [
     span: 6,
     label: "艺术家",
     name: "artist",
-    Field: ArtistSelectField,
+    Field: ArtistSelect,
     fieldProps: {},
   },
   {
     span: 6,
     label: "博物馆",
     name: "museum",
-    Field: MuseumSelectField,
+    Field: MuseumSelect,
     fieldProps: {},
   },
   {
@@ -108,7 +107,7 @@ export default function Art() {
       key: "edit",
       render: (value: any, record: any) => {
         return (
-          <Link href={`/artist/${record._id}`}>
+          <Link href={`/art/${record._id}`}>
             <Button size="small">
               <EditOutlined />
             </Button>
@@ -136,7 +135,11 @@ export default function Art() {
           <Link href="/art/add">
             <Button type="primary">新增</Button>
           </Link>
-          <Filter fields={fields} initialValues={filter} onSubmit={handleSubmit} />
+          <Filter
+            fields={fields}
+            initialValues={filter}
+            onSubmit={handleSubmit}
+          />
           <Table
             columns={columns}
             rowKey="_id"

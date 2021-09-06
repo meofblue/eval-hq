@@ -11,8 +11,7 @@ import {
   Row,
 } from "antd";
 import Head from "components/head";
-import ArtistSelectField from "components/artist-select";
-import MuseumSelectField from "components/museum-select";
+import { MuseumSelect, ArtistSelect } from "components/fields";
 import { addArt } from "api";
 
 const formItemLayout = {
@@ -77,14 +76,14 @@ export default function AddArt() {
           name="artist"
           rules={[{ required: true, message: "请选择作者" }]}
         >
-          <ArtistSelectField />
+          <ArtistSelect />
         </Form.Item>
         <Form.Item
           label="博物馆"
           name="museum"
           rules={[{ required: true, message: "请选择当前所在博物馆" }]}
         >
-          <MuseumSelectField />
+          <MuseumSelect />
         </Form.Item>
         <Form.Item
           label="wiki链接"

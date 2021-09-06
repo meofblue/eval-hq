@@ -1,19 +1,22 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { db } from "cloud";
+import { isNil, omitBy } from "lodash";
 
 /** 支持复杂筛选 */
 export default async function search(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { name, public: isPublic, current = 1, pageSize = 20 } = req.query;
-  let query: any = {};
-  if (name) {
-    query.name = db.RegExp({ regexp: name.toString(), options: "i" });
-  }
-  if (isPublic === "true") {
-    query.public = true;
-  }
+  const { id, name, public: open, current = 1, pageSize = 20 } = req.query;
+
+  const query = omitBy(
+    {
+      _id: id,
+      name: name ? new RegExp(`${name}`, "i") : undefined,
+      public: !!open ? true : undefined,
+    },
+    isNil
+  );
 
   const cmd = db.collection("artists").where(query);
 

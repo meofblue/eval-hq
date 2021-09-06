@@ -8,14 +8,21 @@ interface Field {
   onChange?: () => void;
 }
 
-export default function ArtistSelectField({
+export default function ArtistSelect({
   value,
   onChange,
   ...props
 }: Field) {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 1000);
-  const { data, error } = useArtists({ name: debouncedSearch });
+  const query = {
+    id: value,
+    name: debouncedSearch,
+  };
+  if (!!search) {
+    delete query.id;
+  }
+  const { data, error } = useArtists(query);
   let options = [];
   if (data && data.data) {
     options = data.data.map((item) => ({ label: item.name, value: item._id }));
@@ -24,6 +31,7 @@ export default function ArtistSelectField({
   return (
     <Select
       {...props}
+      value={value}
       placeholder="请选择艺术家"
       style={{ minWidth: 200 }}
       filterOption={false}

@@ -1,19 +1,15 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import {
-  Button,
-  Checkbox,
-  Col,
-  DatePicker,
-  Form,
-  Input,
-  notification,
-  Row,
-} from "antd";
+import { Button, Checkbox, Form, Input, InputNumber, notification } from "antd";
 import Head from "components/head";
 import { Error, Loading } from "components/index";
-import ArtistSelectField from "components/artist-select";
-import MuseumSelectField from "components/museum-select";
+import {
+  ArtistSelect,
+  MuseumSelect,
+  PaintTypeSelect,
+  ObjectTypeSelect,
+} from "components/fields";
+import MediumSelect from "components/fields/medium-select";
 import { useArt, updateArt } from "api";
 
 const formItemLayout = {
@@ -45,7 +41,7 @@ export default function Art() {
 
   const handleSubmit = (values) => {
     setUpdating(true);
-
+    console.log(values);
     updateArt(query.id as string, values)
       .then(() => {
         notification.success({
@@ -79,9 +75,9 @@ export default function Art() {
           <Input />
         </Form.Item>
         <Form.Item
-          label="头像"
-          name="photoUrl"
-          rules={[{ required: true, message: "请上传艺术品头像" }]}
+          label="缩略图"
+          name="thumbnail"
+          rules={[{ required: false, message: "请上传艺术品缩略图" }]}
         >
           <PictureField />
         </Form.Item>
@@ -93,50 +89,57 @@ export default function Art() {
           <Input />
         </Form.Item>
         <Form.Item
-          label="出生日期"
-          name="dateOfBirth"
-          rules={[{ required: true, message: "请输入艺术品出生日期" }]}
+          label="艺术家"
+          name="artist"
+          rules={[{ required: true, message: "请选择艺术家" }]}
         >
-          <DatePicker />
+          <ArtistSelect />
         </Form.Item>
         <Form.Item
-          label="死亡日期"
-          name="dateOfDeath"
-          rules={[{ required: true, message: "请输入艺术品死亡日期" }]}
+          label="博物馆"
+          name="museum"
+          rules={[{ required: true, message: "请选择博物馆" }]}
         >
-          <DatePicker />
+          <MuseumSelect />
         </Form.Item>
         <Form.Item
-          label="风格"
-          name="style"
-          // rules={[{ required: true, message: "请输入艺术品风格" }]}
+          label="媒介"
+          name="medium"
+          rules={[{ required: true, message: "请输入艺术品媒介" }]}
         >
-          <Input />
-        </Form.Item>
-        <Form.Item label="类型" name="genre">
-          <Input />
-        </Form.Item>
-        <Form.Item label="运动" name="movement">
-          <Input placeholder="如文艺复兴" />
+          <MediumSelect />
         </Form.Item>
         <Form.Item
-          label="国籍"
-          name="nation"
-          rules={[{ required: true, message: "请输入艺术品国籍" }]}
+          label="艺术类型"
+          name="objectType"
+          rules={[{ required: true, message: "请输入艺术类型" }]}
         >
-          <Input />
+          <ObjectTypeSelect />
+        </Form.Item>
+        <Form.Item label="绘画类型" name="paintingType">
+          <PaintTypeSelect />
+        </Form.Item>
+        <Form.Item label="风格" name="style">
+          <Input placeholder="如中国画" />
         </Form.Item>
         <Form.Item
-          label="出生地"
-          name="locationOfBirth"
-          rules={[{ required: true, message: "请输入艺术品出生地" }]}
+          label="宽度"
+          name="width"
+          rules={[{ required: true, message: "请输入艺术品宽度/cm" }]}
         >
-          <Input />
+          <InputNumber />
         </Form.Item>
         <Form.Item
-          label="死亡地"
-          name="locationOfDeath"
-          rules={[{ required: true, message: "请输入艺术品死亡地" }]}
+          label="高度"
+          name="height"
+          rules={[{ required: true, message: "请输入艺术品高度/cm" }]}
+        >
+          <InputNumber />
+        </Form.Item>
+        <Form.Item
+          label="日期"
+          name="date"
+          rules={[{ required: true, message: "请输入创作时期" }]}
         >
           <Input />
         </Form.Item>

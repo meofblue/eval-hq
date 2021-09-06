@@ -2,10 +2,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button, Checkbox, Input, Space, Table } from "antd";
 import { EditOutlined } from "@ant-design/icons";
-import Head from "components/head";
 import { useArtists } from "api";
-import styles from "./index.module.css";
+import Head from "components/head";
 import Filter from "components/filter";
+import styles from "./index.module.css";
 
 const fields = [
   {

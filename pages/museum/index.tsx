@@ -2,27 +2,29 @@ import { useState } from "react";
 import Link from "next/link";
 import { Button, Checkbox, Form, Input, Space, Table } from "antd";
 import { EditOutlined } from "@ant-design/icons";
-import Head from "components/head";
 import { useMuseums } from "api";
+import Head from "components/head";
+import Filter from "components/filter";
 import styles from "./index.module.css";
 
-const Filter = ({ value, onSubmit }) => {
-  return (
-    <Form layout="inline" onFinish={onSubmit} initialValues={value}>
-      <Form.Item label="名称" name="name">
-        <Input placeholder="博物馆名称" />
-      </Form.Item>
-      <Form.Item label="上线" name="public" valuePropName="checked">
-        <Checkbox />
-      </Form.Item>
-      <Form.Item>
-        <Button type="primary" htmlType="submit">
-          搜索
-        </Button>
-      </Form.Item>
-    </Form>
-  );
-};
+const fields = [
+  {
+    span: 6,
+    label: "名称",
+    name: "name",
+    Field: Input,
+    fieldProps: {
+      placeholder: "博物馆名称",
+    },
+  },
+  {
+    span: 6,
+    label: "上线",
+    name: "public",
+    Field: Checkbox,
+    itemProps: { valuePropName: "checked" },
+  },
+];
 
 export default function MuseumList() {
   const [filter, setFilter] = useState<any>({});
@@ -43,7 +45,7 @@ export default function MuseumList() {
       dataIndex: "photoUrl",
       key: "photoUrl",
       render: (value: any, record: any, index: number) => {
-        return <img style={{maxHeight: 100}} src={value} />;
+        return <img style={{ maxHeight: 100 }} src={value} />;
       },
     },
     {
@@ -68,7 +70,7 @@ export default function MuseumList() {
       dataIndex: "country",
       key: "country",
     },
-    
+
     {
       title: "编辑",
       dataIndex: "edit",
@@ -100,10 +102,10 @@ export default function MuseumList() {
 
       <main className={styles.main}>
         <Space style={{ width: "100%" }} size="middle" direction="vertical">
-          {/* <Link href="artist/add">
+          <Link href="artist/add">
             <Button type="primary">新增</Button>
-          </Link> */}
-          <Filter value={filter} onSubmit={handleSubmit} />
+          </Link>
+          <Filter fields={fields} onSubmit={handleSubmit} />
           <Table
             columns={columns}
             rowKey="_id"

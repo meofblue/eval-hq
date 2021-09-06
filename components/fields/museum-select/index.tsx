@@ -8,14 +8,17 @@ interface Field {
   onChange?: () => void;
 }
 
-export default function MuseumSelectField({
-  value,
-  onChange,
-  ...props
-}: Field) {
+export default function MuseumSelect({ value, onChange, ...props }: Field) {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 1000);
-  const { data, error } = useMuseums({ name: debouncedSearch });
+  const query = {
+    id: value,
+    name: debouncedSearch,
+  };
+  if (!!search) {
+    delete query.id;
+  }
+  const { data, error } = useMuseums(query);
   let options = [];
   if (data && data.data) {
     options = data.data.map((item) => ({ label: item.name, value: item._id }));
@@ -24,6 +27,7 @@ export default function MuseumSelectField({
   return (
     <Select
       {...props}
+      value={value}
       placeholder="请选择博物馆"
       style={{ minWidth: 200 }}
       filterOption={false}

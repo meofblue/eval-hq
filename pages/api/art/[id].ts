@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import app, { db } from "cloud";
+import { db } from "cloud";
 
 export default async function search(
   req: NextApiRequest,
@@ -26,10 +26,10 @@ export default async function search(
       .get();
 
     if (data.length > 0) {
-      const { fileList } = await app.getTempFileURL({
-        fileList: data[0].photo.toString().split(","),
-      });
-      data[0].photoUrl = fileList[0].tempFileURL;
+      // const { fileList } = await app.getTempFileURL({
+      //   fileList: data[0].photo.toString().split(","),
+      // });
+      // data[0].photoUrl = fileList[0].tempFileURL;
       res.status(200).json(data[0]);
     } else {
       res.status(404);
