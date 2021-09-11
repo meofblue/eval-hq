@@ -7,7 +7,7 @@ interface Field {
 }
 
 export default function MediumSelect({ value, onChange, ...props }: Field) {
-  const types = ["油画", "水彩画"];
+  const types = ["油画", "水彩画", "钢笔画", "壁画"];
   const options = types.map((item) => ({ label: item, value: item }));
 
   return (

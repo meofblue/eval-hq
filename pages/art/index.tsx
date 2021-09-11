@@ -15,7 +15,7 @@ const fields = [
     name: "name",
     Field: Input,
     fieldProps: {
-      placeholder: "艺术品名称",
+      placeholder: "请输入艺术品名称",
     },
   },
   {

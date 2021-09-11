@@ -3,6 +3,8 @@ import MuseumSelect from "./museum-select";
 import MediumSelect from "./medium-select";
 import ObjectTypeSelect from "./object-type-select";
 import PaintTypeSelect from "./painting-type-select";
+import PeriodSelect from "./period-select";
+import MovementSelect from "./movement-select";
 
 export {
   ArtistSelect,
@@ -10,4 +12,6 @@ export {
   MediumSelect,
   ObjectTypeSelect,
   PaintTypeSelect,
+  PeriodSelect,
+  MovementSelect,
 };

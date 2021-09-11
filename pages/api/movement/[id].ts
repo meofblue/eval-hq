@@ -6,7 +6,7 @@ export default async function query(req: NextApiRequest, res: NextApiResponse) {
 
   if (req.method === "POST") {
     await db
-      .collection("artists")
+      .collection("movements")
       .doc(id as string)
       .update(req.body);
 
@@ -19,7 +19,7 @@ export default async function query(req: NextApiRequest, res: NextApiResponse) {
   }
 
   const { data } = await db
-    .collection("artists")
+    .collection("movements")
     .doc(id as string)
     .get();
 

@@ -1,6 +1,14 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import { Button, Checkbox, Form, Input, InputNumber, notification } from "antd";
+import {
+  Button,
+  Checkbox,
+  Form,
+  Input,
+  InputNumber,
+  notification,
+  Tooltip,
+} from "antd";
 import Head from "components/head";
 import { Error, Loading } from "components/index";
 import {
@@ -8,8 +16,9 @@ import {
   MuseumSelect,
   PaintTypeSelect,
   ObjectTypeSelect,
+  MovementSelect,
+  MediumSelect,
 } from "components/fields";
-import MediumSelect from "components/fields/medium-select";
 import { useArt, updateArt } from "api";
 
 const formItemLayout = {
@@ -103,27 +112,35 @@ export default function Art() {
           <MuseumSelect />
         </Form.Item>
         <Form.Item
-          label="媒介"
+          label="物理类型"
+          name="objectType"
+          rules={[{ required: true, message: "请输入艺术类型" }]}
+        >
+          <ObjectTypeSelect />
+        </Form.Item>
+        <Form.Item
+          label="绘画媒介"
           name="medium"
           rules={[{ required: true, message: "请输入艺术品媒介" }]}
         >
           <MediumSelect />
         </Form.Item>
         <Form.Item
-          label="艺术类型"
-          name="objectType"
-          rules={[{ required: true, message: "请输入艺术类型" }]}
+          label="内容类型"
+          name="paintingType"
+          rules={[{ required: true, message: "请输入内容类型" }]}
         >
-          <ObjectTypeSelect />
-        </Form.Item>
-        <Form.Item label="绘画类型" name="paintingType">
           <PaintTypeSelect />
         </Form.Item>
-        <Form.Item label="风格" name="style">
-          <Input placeholder="如中国画" />
+        <Form.Item
+          label="艺术流派"
+          name="movement"
+          rules={[{ required: true, message: "请输入艺术流派" }]}
+        >
+          <MovementSelect />
         </Form.Item>
         <Form.Item
-          label="宽度"
+          label={<Tooltip title={data.dimensions}>宽度</Tooltip>}
           name="width"
           rules={[{ required: true, message: "请输入艺术品宽度/cm" }]}
         >

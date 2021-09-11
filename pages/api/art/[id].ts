@@ -26,10 +26,6 @@ export default async function search(
       .get();
 
     if (data.length > 0) {
-      // const { fileList } = await app.getTempFileURL({
-      //   fileList: data[0].photo.toString().split(","),
-      // });
-      // data[0].photoUrl = fileList[0].tempFileURL;
       res.status(200).json(data[0]);
     } else {
       res.status(404);

@@ -8,6 +8,7 @@ import {
   TableOutlined,
   ScheduleOutlined,
   TrophyOutlined,
+  HistoryOutlined
 } from "@ant-design/icons";
 import styles from "./index.module.css";
 import { useRouter } from "next/router";
@@ -39,6 +40,12 @@ const menus = [
     icon: <HeatMapOutlined />,
     name: "博物馆",
   },
+  {
+    key: "movement",
+    path: "/movement",
+    icon: <HistoryOutlined />,
+    name: "运动流派",
+  },
   // {
   //   key: "collection",
   //   path: "/collection",
@@ -56,7 +63,8 @@ const menus = [
 export default function BasicLayout({ children }) {
   const [collapsed, setCollapsed] = useState(false);
   const { pathname } = useRouter();
-  const activeMenu = menus.find((item) => item.path === pathname) || menus[0];
+  console.log(pathname)
+  const activeMenu = menus.find((item) => pathname.split('/')[1] === item.key ) || menus[0];
 
   const handleCollapse = () => {
     setCollapsed(!collapsed);

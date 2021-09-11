@@ -1,8 +1,8 @@
 import { useState } from "react";
 import Link from "next/link";
-import { Button, Checkbox, Form, Input, Space, Table } from "antd";
+import { Button, Checkbox, Input, Space, Table } from "antd";
 import { EditOutlined } from "@ant-design/icons";
-import { useMuseums } from "api";
+import { useMovements } from "api";
 import Head from "components/head";
 import Filter from "components/filter";
 import styles from "./index.module.css";
@@ -10,11 +10,11 @@ import styles from "./index.module.css";
 const fields = [
   {
     span: 6,
-    label: "名称",
+    label: "艺术流派",
     name: "name",
     Field: Input,
     fieldProps: {
-      placeholder: "请输入博物馆名称",
+      placeholder: "请输入流派名称",
     },
   },
   {
@@ -26,11 +26,13 @@ const fields = [
   },
 ];
 
-export default function MuseumList() {
+const PERIOD_MAP = ["早期", "中期", "后期"];
+
+export default function MovementList() {
   const [filter, setFilter] = useState<any>({});
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(20);
-  const { data, error } = useMuseums({
+  const { data, error } = useMovements({
     current,
     pageSize,
     ...filter,
@@ -41,43 +43,41 @@ export default function MuseumList() {
 
   const columns = [
     {
-      title: "照片",
-      dataIndex: "photoUrl",
-      key: "photoUrl",
-      render: (value: any, record: any, index: number) => {
-        return <img style={{ maxHeight: 100 }} src={value} />;
-      },
-    },
-    {
-      title: "名称",
+      title: "流派名称",
       dataIndex: "name",
       key: "name",
-      render: (value: any, record: any, index: number) => {
+    },
+    {
+      title: "开始时间",
+      dataIndex: "startCentury",
+      key: "startCentury",
+      render: (value: number, record: any) => {
         return (
-          <a target="_blank" href={record.wikiLink}>
-            {record.name}
-          </a>
+          <span>
+            {value}世纪{PERIOD_MAP[record.startPeriod]}（{record.startYear}）
+          </span>
         );
       },
     },
     {
-      title: "创建于",
-      dataIndex: "established",
-      key: "established",
+      title: "结束时间",
+      dataIndex: "endCentury",
+      key: "endCentury",
+      render: (value: number, record: any) => {
+        return (
+          <span>
+            {value}世纪{PERIOD_MAP[record.endPeriod]}（{record.endYear}）
+          </span>
+        );
+      },
     },
-    {
-      title: "位于",
-      dataIndex: "country",
-      key: "country",
-    },
-
     {
       title: "编辑",
       dataIndex: "edit",
       key: "edit",
       render: (value: any, record: any) => {
         return (
-          <Link href={`/museum/${record._id}`}>
+          <Link href={`/movement/${record._id}`}>
             <Button size="small">
               <EditOutlined />
             </Button>
@@ -98,11 +98,11 @@ export default function MuseumList() {
 
   return (
     <div className={styles.container}>
-      <Head title="博物馆" />
+      <Head title="艺术流派" />
 
       <main className={styles.main}>
         <Space style={{ width: "100%" }} size="middle" direction="vertical">
-          <Link href="artist/add">
+          <Link href="movement/add">
             <Button type="primary">新增</Button>
           </Link>
           <Filter fields={fields} onSubmit={handleSubmit} />

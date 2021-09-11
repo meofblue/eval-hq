@@ -49,3 +49,10 @@ export const useMuseum = (id: string) => get(`/api/museum/${id}`);
 
 export const updateMuseum = (id: string, data: any) =>
   post(`/api/museum/${id}`, data);
+
+export const useMovements = (query) => get("/api/movement/search", query);
+
+export const useMovement = (id: string) => get(`/api/movement/${id}`);
+
+export const updateMovement = (id: string, data: any) =>
+  post(`/api/movement/${id}`, data);
