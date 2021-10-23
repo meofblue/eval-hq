@@ -3,11 +3,6 @@ import { Select, Spin } from "antd";
 import { useMuseums } from "api";
 import { useDebounce } from "hooks";
 
-interface Field {
-  value?: any;
-  onChange?: () => void;
-}
-
 export default function MuseumSelect({ value, onChange, ...props }: Field) {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, 1000);
@@ -32,8 +27,10 @@ export default function MuseumSelect({ value, onChange, ...props }: Field) {
       style={{ minWidth: 200 }}
       filterOption={false}
       showSearch
+      allowClear
       onSearch={setSearch}
       onSelect={onChange}
+      onClear={onChange}
       notFoundContent={!data && !error ? <Spin size="small" /> : null}
       options={options}
     />

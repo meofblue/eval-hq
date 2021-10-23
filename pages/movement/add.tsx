@@ -1,16 +1,9 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import {
-  Button,
-  Checkbox,
-  Form,
-  Input,
-  InputNumber,
-  notification,
-} from "antd";
+import { Button, Checkbox, Form, Input, notification } from "antd";
 import Head from "components/head";
-import { updateMovement } from "api";
-import { PeriodSelect } from "components/fields";
+import { MovementTimeField } from "components/fields";
+import { createMovement } from "api";
 
 const formItemLayout = {
   labelCol: { span: 6 },
@@ -22,23 +15,38 @@ const tailLayout = {
 
 export default function AddMovement() {
   const [updating, setUpdating] = useState(false);
-  const { query } = useRouter();
+  const { push } = useRouter();
 
   const handleSubmit = (values) => {
     setUpdating(true);
 
-    updateMovement(query.id as string, values)
+    if (values.startTime) {
+      values.startCentury = values.startTime.century;
+      values.startPeriod = values.startTime.period;
+      values.startYear = values.startTime.year;
+      delete values.startTime;
+    }
+
+    if (values.endTime) {
+      values.endCentury = values.endTime.century;
+      values.endPeriod = values.endTime.period;
+      values.endYear = values.endTime.year;
+      delete values.endTime;
+    }
+
+    createMovement(values)
       .then(() => {
         notification.success({
           message: "创建成功",
         });
+        push("/movement");
       })
       .finally(() => setUpdating(false));
   };
 
   return (
     <div>
-      <Head title="新增" />
+      <Head title="新增艺术流派" />
       <Form name="movement" {...formItemLayout} onFinish={handleSubmit}>
         <Form.Item
           label="流派名称"
@@ -48,40 +56,29 @@ export default function AddMovement() {
           <Input />
         </Form.Item>
         <Form.Item
-          label="开始世纪"
-          name="startCentury"
-          rules={[{ required: true, message: "请输入开始世纪" }]}
+          label="英文名称"
+          name="nameEn"
+          rules={[{ required: true, message: "请输入流派英文名称" }]}
         >
-          <InputNumber />
+          <Input />
         </Form.Item>
         <Form.Item
-          label="开始世纪阶段"
-          name="startPeriod"
-          rules={[{ required: true, message: "请输入开始世纪阶段" }]}
+          label="开始时间"
+          name="startTime"
+          rules={[{ required: true, message: "请输入开始时间" }]}
         >
-          <PeriodSelect />
-        </Form.Item>
-        <Form.Item label="开始年份" name="startYear">
-          <InputNumber />
+          <MovementTimeField />
         </Form.Item>
         <Form.Item
-          label="结束世纪"
-          name="endCentury"
-          rules={[{ required: true, message: "请输入结束世纪" }]}
+          label="结束时间"
+          name="endTime"
+          rules={[{ required: false, message: "请输入结束时间" }]}
         >
-          <InputNumber />
+          <MovementTimeField />
         </Form.Item>
-        <Form.Item
-          label="结束世纪阶段"
-          name="endPeriod"
-          rules={[{ required: true, message: "请输入结束世纪阶段" }]}
-        >
-          <PeriodSelect />
+        <Form.Item label="wiki连接" name="wikiLink">
+          <Input />
         </Form.Item>
-        <Form.Item label="结束年份" name="endYear">
-          <InputNumber />
-        </Form.Item>
-
         <Form.Item
           label="描述"
           name="description"

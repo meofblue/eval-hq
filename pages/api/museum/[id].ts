@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import app, { db } from "cloud";
+import { db } from "cloud";
 
 export default async function query(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
@@ -24,11 +24,10 @@ export default async function query(req: NextApiRequest, res: NextApiResponse) {
     .get();
 
   if (data.length > 0) {
-    const { fileList } = await app.getTempFileURL({
-      fileList: data[0].photo.toString().split(","),
+    res.status(200).json({
+      ...data[0],
+      photoUrl: `${process.env.CDN_ENDPOINT}/${data[0].photo}`,
     });
-    data[0].photoUrl = fileList[0].tempFileURL;
-    res.status(200).json(data[0]);
   } else {
     res.status(404);
   }

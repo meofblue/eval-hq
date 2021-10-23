@@ -1,18 +1,10 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import {
-  Button,
-  Checkbox,
-  Form,
-  Input,
-  InputNumber,
-  notification,
-  Space,
-} from "antd";
+import { Button, Checkbox, Form, Input, notification } from "antd";
 import Head from "components/head";
 import { Error, Loading } from "components/index";
 import { useMovement, updateMovement } from "api";
-import { PeriodSelect } from "components/fields";
+import { MovementTimeField } from "components/fields";
 
 const formItemLayout = {
   labelCol: { span: 6 },
@@ -25,32 +17,6 @@ const tailLayout = {
 interface Field {
   value?: any;
   onChange?: (val) => void;
-}
-
-function TimeField({ value, onChange }: Field) {
-  const handleChange = (val) => {
-    onChange({
-      ...value,
-      ...val,
-    });
-  };
-
-  return (
-    <Space>
-      <InputNumber
-        value={value.century}
-        onChange={(val) => handleChange({ century: val })}
-      />
-      <PeriodSelect
-        value={value.period}
-        onChange={(val) => handleChange({ period: val })}
-      />
-      <InputNumber
-        value={value.year}
-        onChange={(val) => handleChange({ year: val })}
-      />
-    </Space>
-  );
 }
 
 export default function Movement() {
@@ -77,13 +43,13 @@ export default function Movement() {
   const handleSubmit = (values) => {
     setUpdating(true);
 
-    values.startCentury = data.startTime.century;
-    values.startPeriod = data.startTime.period;
-    values.startYear = data.startTime.year;
+    values.startCentury = values.startTime.century;
+    values.startPeriod = values.startTime.period;
+    values.startYear = values.startTime.year;
 
-    values.endCentury = data.endTime.century;
-    values.endPeriod = data.endTime.period;
-    values.endYear = data.endTime.year;
+    values.endCentury = values.endTime.century;
+    values.endPeriod = values.endTime.period;
+    values.endYear = values.endTime.year;
 
     delete values.startTime;
     delete values.endTime;
@@ -114,18 +80,28 @@ export default function Movement() {
           <Input />
         </Form.Item>
         <Form.Item
+          label="英文名称"
+          name="nameEn"
+          rules={[{ required: true, message: "请输入流派英文名称" }]}
+        >
+          <Input />
+        </Form.Item>
+        <Form.Item
           label="开始时间"
           name="startTime"
           rules={[{ required: true, message: "请输入开始时间" }]}
         >
-          <TimeField />
+          <MovementTimeField />
         </Form.Item>
         <Form.Item
           label="结束时间"
           name="endTime"
-          rules={[{ required: true, message: "请输入结束时间" }]}
+          rules={[{ required: false, message: "请输入结束时间" }]}
         >
-          <TimeField />
+          <MovementTimeField />
+        </Form.Item>
+        <Form.Item label="wiki 地址" name="wikiLink">
+          <Input />
         </Form.Item>
         <Form.Item
           label="描述"

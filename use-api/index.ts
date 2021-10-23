@@ -1,7 +1,7 @@
 import { isNil } from "lodash";
 import useSWR from "swr";
 
-function buildQuery(query: any) {
+function buildQuery(query: string) {
   const params = new URLSearchParams();
 
   Object.keys(query).forEach((key) => {
@@ -23,8 +23,8 @@ function post(path: string, data: any) {
   }).then((res) => res.json());
 }
 
-function get(path: string, query?: any) {
-  return useSWR(query ? `${path}?${buildQuery(query)}` : path);
+function get(path: string, query: any = {}) {
+  return useSWR(`${path}?${buildQuery(query)}`);
 }
 
 export const useArts = (query) => get("/api/art/search", query);
@@ -50,9 +50,13 @@ export const useMuseum = (id: string) => get(`/api/museum/${id}`);
 export const updateMuseum = (id: string, data: any) =>
   post(`/api/museum/${id}`, data);
 
+export const createMuseum = (data: any) => post(`/api/museum/create`, data);
+
 export const useMovements = (query) => get("/api/movement/search", query);
 
 export const useMovement = (id: string) => get(`/api/movement/${id}`);
 
 export const updateMovement = (id: string, data: any) =>
   post(`/api/movement/${id}`, data);
+
+export const createMovement = (data: any) => post(`/api/movement/create`, data);

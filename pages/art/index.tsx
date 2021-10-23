@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Link from "next/link";
-import { Button, Checkbox, Input, Space, Table } from "antd";
+import { Button, Checkbox, Input, Popover, Space, Table } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { useArts } from "api";
 import Head from "components/head";
@@ -61,8 +61,23 @@ export default function Art() {
       dataIndex: "thumbnail",
       key: "thumbnail",
       render: (value: any, record: any, index: number) => {
-        return null;
-        return <img style={{ maxWidth: 100 }} src={record.fileLink} />;
+        if (value) {
+          return (
+            <Popover
+              content={
+                <img
+                  src={value}
+                />
+              }
+              placement="right"
+            >
+              <img
+                style={{ maxWidth: 100 }}
+                src={value}
+              />
+            </Popover>
+          );
+        }
       },
     },
     {

@@ -3,6 +3,7 @@ import { db } from "cloud";
 
 export default async function query(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
+  console.log(111, req.method, req.body);
 
   if (req.method === "POST") {
     await db

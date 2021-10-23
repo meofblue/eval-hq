@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
 import {
   Button,
   Checkbox,
@@ -14,10 +15,11 @@ import { Error, Loading } from "components/index";
 import {
   ArtistSelect,
   MuseumSelect,
-  PaintTypeSelect,
+  GenreSelect,
   ObjectTypeSelect,
   MovementSelect,
   MediumSelect,
+  Picture,
 } from "components/fields";
 import { useArt, updateArt } from "api";
 
@@ -27,14 +29,6 @@ const formItemLayout = {
 };
 const tailLayout = {
   wrapperCol: { offset: 6, span: 16 },
-};
-
-const PictureField: React.FC<any> = ({ value, onChange }) => {
-  return (
-    <div className="photo">
-      <img style={{ maxHeight: 200 }} src={value} />
-    </div>
-  );
 };
 
 export default function Art() {
@@ -50,7 +44,9 @@ export default function Art() {
 
   const handleSubmit = (values) => {
     setUpdating(true);
-    console.log(values);
+
+    delete values.thumbnail;
+
     updateArt(query.id as string, values)
       .then(() => {
         notification.success({
@@ -88,13 +84,16 @@ export default function Art() {
           name="thumbnail"
           rules={[{ required: false, message: "请上传艺术品缩略图" }]}
         >
-          <PictureField />
+          <Picture />
         </Form.Item>
         <Form.Item
           label="wiki链接"
           name="wikiLink"
           rules={[{ required: true, message: "维基百科艺术品主页" }]}
         >
+          <Input />
+        </Form.Item>
+        <Form.Item label="文件链接" name="fileLink">
           <Input />
         </Form.Item>
         <Form.Item
@@ -127,10 +126,10 @@ export default function Art() {
         </Form.Item>
         <Form.Item
           label="内容类型"
-          name="paintingType"
+          name="genre"
           rules={[{ required: true, message: "请输入内容类型" }]}
         >
-          <PaintTypeSelect />
+          <GenreSelect />
         </Form.Item>
         <Form.Item
           label="艺术流派"
@@ -140,19 +139,20 @@ export default function Art() {
           <MovementSelect />
         </Form.Item>
         <Form.Item
+          label={<Tooltip title={data.dimensions}>高度</Tooltip>}
+          name="height"
+          rules={[{ required: true, message: "请输入艺术品高度/cm" }]}
+        >
+          <InputNumber />
+        </Form.Item>
+        <Form.Item
           label={<Tooltip title={data.dimensions}>宽度</Tooltip>}
           name="width"
           rules={[{ required: true, message: "请输入艺术品宽度/cm" }]}
         >
           <InputNumber />
         </Form.Item>
-        <Form.Item
-          label="高度"
-          name="height"
-          rules={[{ required: true, message: "请输入艺术品高度/cm" }]}
-        >
-          <InputNumber />
-        </Form.Item>
+
         <Form.Item
           label="日期"
           name="date"

@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { Button, Checkbox, DatePicker, Form, Input, notification } from "antd";
 import moment from "moment";
 import Head from "components/head";
+import { Picture } from "components/fields";
 import { useMuseum, updateMuseum } from "api";
 
 const formItemLayout = {
@@ -13,15 +14,7 @@ const tailLayout = {
   wrapperCol: { offset: 6, span: 16 },
 };
 
-const PictureField: React.FC<any> = ({ value, onChange }) => {
-  return (
-    <div className="photo">
-      <img style={{ maxHeight: 200 }} src={value} />
-    </div>
-  );
-};
-
-export default function Art() {
+export default function Museum() {
   const [updating, setUpdating] = useState(false);
   const { query } = useRouter();
   const { data, error } = useMuseum(query.id as string);
@@ -55,7 +48,7 @@ export default function Art() {
 
   return (
     <div>
-      <Head title="编辑" />
+      <Head title="编辑博物馆" />
       <Form
         name="museum"
         {...formItemLayout}
@@ -79,9 +72,9 @@ export default function Art() {
         <Form.Item
           label="照片"
           name="photoUrl"
-          rules={[{ required: true, message: "请上传博物馆头像" }]}
+          // rules={[{ required: true, message: "请上传博物馆头像" }]}
         >
-          <PictureField />
+          <Picture />
         </Form.Item>
         <Form.Item
           label="wiki链接"
@@ -121,7 +114,6 @@ export default function Art() {
         <Form.Item
           label="描述"
           name="description"
-          rules={[{ required: true, message: "请输入博物馆简介" }]}
         >
           <Input.TextArea />
         </Form.Item>

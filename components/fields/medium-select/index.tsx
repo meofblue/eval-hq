@@ -1,11 +1,6 @@
 import React from "react";
 import { Select } from "antd";
 
-interface Field {
-  value?: any;
-  onChange?: () => void;
-}
-
 export default function MediumSelect({ value, onChange, ...props }: Field) {
   const types = ["油画", "水彩画", "钢笔画", "壁画"];
   const options = types.map((item) => ({ label: item, value: item }));

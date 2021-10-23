@@ -3,11 +3,6 @@ import { Select, Spin } from "antd";
 import { useArtists } from "api";
 import { useDebounce } from "hooks";
 
-interface Field {
-  value?: any;
-  onChange?: () => void;
-}
-
 export default function ArtistSelect({
   value,
   onChange,
@@ -17,6 +12,7 @@ export default function ArtistSelect({
   const debouncedSearch = useDebounce(search, 1000);
   const query = {
     id: value,
+    public: true,
     name: debouncedSearch,
   };
   if (!!search) {
@@ -35,9 +31,11 @@ export default function ArtistSelect({
       placeholder="请选择艺术家"
       style={{ minWidth: 200 }}
       filterOption={false}
+      allowClear
       showSearch
       onSearch={setSearch}
       onSelect={onChange}
+      onClear={onChange}
       notFoundContent={!data && !error ? <Spin size="small" /> : null}
       options={options}
     />

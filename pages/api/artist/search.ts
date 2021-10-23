@@ -11,7 +11,7 @@ export default async function search(
 
   const query = omitBy(
     {
-      _id: id,
+      _id: !!id ? id : undefined,
       name: name ? new RegExp(`${name}`, "i") : undefined,
       public: !!open ? true : undefined,
     },

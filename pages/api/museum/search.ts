@@ -10,7 +10,7 @@ export default async function search(
   const { id, name, public: open, current = 1, pageSize = 20 } = req.query;
   const query = omitBy(
     {
-      _id: id,
+      _id: !!id ? id : undefined,
       name: name ? new RegExp(`${name}`, "i") : undefined,
       public: !!open ? true : undefined,
     },

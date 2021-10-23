@@ -62,6 +62,10 @@ export default async function search(
       pageSize: +pageSize,
       total,
     },
-    data,
+    data: data.map(item => ({
+      ...item,
+      thumbnail: `${process.env.CDN_ENDPOINT}/${item.thumbnail}`,
+      originalUrl: `${process.env.CDN_ENDPOINT}/${item.originalUrl}`,
+    })),
   });
 }

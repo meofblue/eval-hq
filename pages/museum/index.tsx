@@ -102,7 +102,7 @@ export default function MuseumList() {
 
       <main className={styles.main}>
         <Space style={{ width: "100%" }} size="middle" direction="vertical">
-          <Link href="artist/add">
+          <Link href="museum/add">
             <Button type="primary">新增</Button>
           </Link>
           <Filter fields={fields} onSubmit={handleSubmit} />

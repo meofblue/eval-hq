@@ -1,17 +1,11 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
-import {
-  Button,
-  Checkbox,
-  DatePicker,
-  Form,
-  Input,
-  notification,
-} from "antd";
+import { Button, Checkbox, DatePicker, Form, Input, notification } from "antd";
 import moment from "moment";
 import Head from "components/head";
 import { Error, Loading } from "components/index";
 import { useArtist, updateArtist } from "api";
+import { MovementSelect } from "components/fields";
 
 const formItemLayout = {
   labelCol: { span: 6 },
@@ -38,17 +32,8 @@ export default function Artist() {
   if (error) return <Error />;
   if (!data) return <Loading />;
 
-  data.locationOfBirth = data.locationOfBirth || data.locationOfBirthDeath[0];
-  data.locationOfDeath = data.locationOfDeath || data.locationOfBirthDeath[1];
-
-  data.dateOfBirth = data.dateOfBirth
-    ? moment(data.dateOfBirth)
-    : moment(data.dateOfBirthDeath[0]);
-
-  data.dateOfDeath = data.dateOfDeath
-    ? moment(data.dateOfDeath)
-    : moment(data.dateOfBirthDeath[1]);
-
+  data.dateOfBirth = moment(data.dateOfBirth);
+  data.dateOfDeath = moment(data.dateOfDeath);
   data.nameEn = data.nameEn || data.name;
 
   const handleSubmit = (values) => {
@@ -110,14 +95,14 @@ export default function Artist() {
         <Form.Item
           label="出生日期"
           name="dateOfBirth"
-          rules={[{ required: true, message: "请输入艺术家出生日期" }]}
+          rules={[{ required: false, message: "请输入艺术家出生日期" }]}
         >
           <DatePicker />
         </Form.Item>
         <Form.Item
           label="死亡日期"
           name="dateOfDeath"
-          rules={[{ required: true, message: "请输入艺术家死亡日期" }]}
+          rules={[{ required: false, message: "请输入艺术家死亡日期" }]}
         >
           <DatePicker />
         </Form.Item>
@@ -132,7 +117,7 @@ export default function Artist() {
           <Input />
         </Form.Item>
         <Form.Item label="运动" name="movement">
-          <Input placeholder="如文艺复兴" />
+          <MovementSelect />
         </Form.Item>
         <Form.Item
           label="国籍"

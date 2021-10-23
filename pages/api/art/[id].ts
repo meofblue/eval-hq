@@ -25,8 +25,15 @@ export default async function search(
       .doc(id as string)
       .get();
 
+    const { thumbnail, tileDir, originalUrl, ...rest } = data[0];
+
     if (data.length > 0) {
-      res.status(200).json(data[0]);
+      res.status(200).json({
+        ...rest,
+        tileDir: `${process.env.CDN_ENDPOINT}/${tileDir}`,
+        thumbnail: `${process.env.CDN_ENDPOINT}/${thumbnail}`,
+        originalUrl: `${process.env.CDN_ENDPOINT}/${originalUrl}`,
+      });
     } else {
       res.status(404);
     }

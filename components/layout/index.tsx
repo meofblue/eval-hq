@@ -63,7 +63,6 @@ const menus = [
 export default function BasicLayout({ children }) {
   const [collapsed, setCollapsed] = useState(false);
   const { pathname } = useRouter();
-  console.log(pathname)
   const activeMenu = menus.find((item) => pathname.split('/')[1] === item.key ) || menus[0];
 
   const handleCollapse = () => {

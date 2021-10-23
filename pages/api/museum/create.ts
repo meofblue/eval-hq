@@ -9,6 +9,6 @@ export default async function create(
 
   res.status(200).json({
     ...req.body,
-    id,
+    _id: id,
   });
 }

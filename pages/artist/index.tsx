@@ -1,8 +1,10 @@
 import { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { Button, Checkbox, Input, Space, Table } from "antd";
 import { EditOutlined } from "@ant-design/icons";
 import { useArtists } from "api";
+import { useStorage } from "hooks";
 import Head from "components/head";
 import Filter from "components/filter";
 import styles from "./index.module.css";
@@ -27,7 +29,9 @@ const fields = [
 ];
 
 export default function ArtistList() {
-  const [filter, setFilter] = useState<any>({});
+  const { pathname } = useRouter();
+  const [cache, setCache] = useStorage(pathname);
+  const [filter, setFilter] = useState<any>(cache);
   const [current, setCurrent] = useState(1);
   const [pageSize, setPageSize] = useState(20);
   const { data, error } = useArtists({
@@ -126,6 +130,7 @@ export default function ArtistList() {
 
   const handleSubmit = (val) => {
     setFilter(val);
+    setCache(val);
   };
 
   return (
@@ -137,7 +142,7 @@ export default function ArtistList() {
           <Link href="artist/add">
             <Button type="primary">新增</Button>
           </Link>
-          <Filter fields={fields} onSubmit={handleSubmit} />
+          <Filter initialValues={filter} fields={fields} onSubmit={handleSubmit} />
           <Table
             columns={columns}
             rowKey="_id"

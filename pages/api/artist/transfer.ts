@@ -1,11 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
-import { app, db } from "cloud";
-
-function sleep(time) {
-  return new Promise((resolve) => {
-    setTimeout(resolve, time);
-  });
-}
+import { db } from "cloud";
+import moment from "moment";
 
 /** 支持复杂筛选 */
 export default async function search(
@@ -42,8 +37,8 @@ export default async function search(
     }
 
     if (Array.isArray(item.dateOfBirthDeath)) {
-      partial.dateOfBirth = item.dateOfBirthDeath[0];
-      partial.dateOfDeath = item.dateOfBirthDeath[1];
+      partial.dateOfBirth = moment(item.dateOfBirthDeath[0]).format('YYYY-MM-DD');
+      partial.dateOfDeath = moment(item.dateOfBirthDeath[1]).format('YYYY-MM-DD');
     }
 
     const { _id: id, ...rest } = item;
